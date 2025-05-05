@@ -1,0 +1,53 @@
+# .github/workflows/deploy-slack-bot.yml
+
+name: Deploy Slack Bot
+
+on:
+  push:
+    branches:
+      - main  # Trigger workflow on push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        
+    - name: Add host key to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        
+    - name: Deploy to server
+      env:
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USER: ${{ secrets.SERVER_USER }}
+        APP_DIR: ${{ secrets.APP_DIR }}
+      run: |
+        ssh $SERVER_USER@$SERVER_IP "
+          cd $APP_DIR && \
+          git pull origin main && \
+          source venv/bin/activate && \
+          pip install -r requirements.txt && \
+          
+          # Check if bot is already running and stop it
+          BOT_PID=\$(pgrep -f 'python app.py' || echo '')
+          if [ -n \"\$BOT_PID\" ]; then
+            echo 'Stopping existing bot process...'
+            kill \$BOT_PID
+            sleep 3
+          fi
+          
+          # Start the bot in the background with nohup
+          echo 'Starting bot...'
+          nohup python app.py > bot.log 2>&1 &
+          
+          echo 'Deployment completed successfully!'
+        "
