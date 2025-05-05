@@ -21,7 +21,7 @@ def message_hello(event, say):
     thread_ts = event.get("thread_ts", event.get("ts"))
     
     # Check if the event is in the correct channel
-    if event.get("channel") != "C088JM79NLX":
+    if event.get("channel") not in ["C08RKK2AMT2", "C088JM79NLX"]:
         return say("Sorry, I can only respond to messages in the #being-adept channel.", thread_ts=thread_ts)
     
     # Prepare the base wait message
