@@ -1,0 +1,538 @@
+{
+    "sessionTitle": {
+        "uiLabel": "Session Title",
+        "description": "The title of your Being Adept session, should be catchy and descriptive",
+        "type": "text",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "basic",
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "maxLength": 100
+        },
+        "emoji": ":rocket:",
+        "chatbot": {
+            "idealogy": "A trending title thats catchy and descriptive, and will be used to as way to convey people the idea of the session, but it should not be too vague. Also if the users data is not related enough to the session, maybe sometimes suggest a slightly better title.",
+            "askOrder": 1,
+            "synonyms": [
+                "title",
+                "topic",
+                "session name",
+                "event title",
+                "presentation title"
+            ],
+            "contextualQuestions": [
+                "What's the title for your Being Adept session?",
+                "What should we call your AI knowledge-sharing session?",
+                "Got a catchy title for your session?",
+                "What's the main topic or title of your session?"
+            ],
+            "examples": {
+                "demo": "Building RAG Systems with ChromaDB",
+                "workshop": "Hands-on LLM Fine-tuning Workshop",
+                "presentation": "The Future of AI in Software Development",
+                "discussion": "Ethical Considerations in AI Development"
+            },
+            "importance": "high",
+            "followUpFields": ["presenterNames", "sessionType"]
+        }
+    },
+    "presenterNames": {
+        "uiLabel": "Presenter Name(s)",
+        "description": "The names of the people presenting the session with their Slack handles",
+        "type": "text",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "presenters",
+        "validation": {
+            "required": true,
+            "minLength": 2,
+            "maxLength": 150
+        },
+        "emoji": ":microphone:",
+        "chatbot": {
+            "idealogy": "",
+            "askOrder": 2,
+            "synonyms": [
+                "presenter",
+                "host",
+                "speaker",
+                "facilitator",
+                "lead"
+            ],
+            "contextualQuestions": [
+                "Who will be presenting this session?",
+                "Can you provide the names and Slack handles of the presenters?",
+                "Who's hosting this Being Adept session?",
+                "Which team members are leading this session?"
+            ],
+            "examples": {
+                "singlePresenter": "@johndoe",
+                "multiplePresenters": "@johndoe, @janedoe"
+            },
+            "importance": "high",
+            "followUpFields": ["sessionType"]
+        }
+    },
+    "sessionType": {
+        "uiLabel": "Session Type",
+        "description": "The format of the session (demo, workshop, presentation, or discussion)",
+        "type": "select",
+        "options": ["demo", "workshop", "presentation", "discussion", "lightning talk"],
+        "optionLabels": {
+            "demo": "Demo (showing a tool or technique)",
+            "workshop": "Workshop (hands-on participation)",
+            "presentation": "Presentation (sharing knowledge)",
+            "discussion": "Discussion (exploring ideas together)",
+            "lightning talk": "Lightning Talk (brief introduction to a concept)"
+        },
+        "default": "demo",
+        "currentValue": "demo",
+        "fieldGroup": "basic",
+        "validation": {
+            "required": true,
+            "allowedValues": ["demo", "workshop", "presentation", "discussion", "lightning talk"]
+        },
+        "emoji": ":gear:",
+        "chatbot": {
+            "idealogy": "",
+            "askOrder": 3,
+            "synonyms": [
+                "format",
+                "session format",
+                "event type",
+                "presentation style",
+                "meeting format"
+            ],
+            "contextualQuestions": [
+                "What type of session will this be?",
+                "Will this be a demo, workshop, presentation, or discussion?",
+                "How would you like to structure your session?",
+                "What format works best for the topic you're covering?"
+            ],
+            "examples": {
+                "demo": "I'll demonstrate how to use an AI-powered coding assistant",
+                "workshop": "Participants will build a RAG system together",
+                "presentation": "I'll share findings from our AI experiments",
+                "discussion": "We'll explore prompt engineering best practices",
+                "lightning talk": "A quick intro to vector databases"
+            },
+            "importance": "high",
+            "followUpFields": ["sessionDate", "sessionDuration"]
+        },
+        "dependencies": {
+            "affects": [
+                "sessionDuration",
+                "prerequisites",
+                "hasPrerequisites"
+            ]
+        }
+    },
+    "sessionDate": {
+        "uiLabel": "Session Date and Time",
+        "description": "When the session will take place (date and time)",
+        "type": "datetime",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "logistics",
+        "validation": {
+            "required": true,
+            "format": "date-time"
+        },
+        "emoji": ":calendar:",
+        "chatbot": {
+            "idealogy": "The session data should always be in the future, and if the user is not sure about the date, suggest a working that comes atleast 2-3 days later. Also, if the user is not sure about the time, suggest a time between 10 AM and 5 PM. 4 PM is the most preferred time. But the final decision should be made by the user or presenter.",
+            "askOrder": 4,
+            "synonyms": [
+                "date",
+                "time",
+                "when",
+                "schedule",
+                "timing"
+            ],
+            "contextualQuestions": [
+                "When would you like to schedule this session?",
+                "What date and time works for your session?",
+                "When will this Being Adept session take place?",
+                "Do you have a specific date and time in mind?"
+            ],
+            "examples": {
+                "specificDateTime": "Friday, May 10th at 3 PM",
+                "relativeDateTime": "Next Tuesday at 2 PM",
+                "dayOfWeek": "This Thursday at 11 AM"
+            },
+            "importance": "high",
+            "followUpFields": ["sessionDuration"]
+        }
+    },
+    "sessionDuration": {
+        "uiLabel": "Session Duration",
+        "description": "How long the session will last",
+        "type": "duration",
+        "options": ["15min", "30min", "45min", "60min", "90min", "120min"],
+        "fieldGroup": "logistics",
+        "validation": {
+            "required": true,
+            "allowedValues": ["15min", "30min", "45min", "60min", "90min", "120min"]
+        },
+        "emoji": ":hourglass:",
+        "chatbot": {
+            "idealogy": "",
+            "askOrder": 5,
+            "synonyms": [
+                "duration",
+                "length",
+                "how long",
+                "time length",
+                "meeting time"
+            ],
+            "contextualQuestions": [
+                "How long will your session last?",
+                "What's the expected duration of your session?",
+                "How much time should we allocate for this session?",
+                "Will this be a 30-minute session or do you need more time?"
+            ],
+            "examples": {
+                "demo": "30 minutes",
+                "workshop": "90 minutes",
+                "presentation": "45 minutes",
+                "discussion": "60 minutes",
+                "lightning talk": "15 minutes"
+            },
+            "importance": "high",
+            "followUpFields": ["sessionLocation"]
+        },
+        "dependencies": {
+            "dependsOn": ["sessionType"]
+        }
+    },
+    "sessionLocation": {
+        "uiLabel": "Session Location",
+        "description": "Where the session will take place (meeting link or physical location)",
+        "type": "url",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "logistics",
+        "validation": {
+            "required": false,
+            "format": "url"
+        },
+        "emoji": ":link:",
+        "chatbot": {
+            "idealogy": "Usually after the session is scheduled, we just share a Google Meet link. But if the session is in-person, we can share the location of the meeting room. So this is not really a required field, but it is good to have. Also, if the user is not sure about the location, suggest getting a Google Meet link from the organizer with recording enabled.",
+            "askOrder": 6,
+            "synonyms": [
+                "location",
+                "where",
+                "meeting link",
+                "venue",
+                "meeting room"
+            ],
+            "contextualQuestions": [
+                "Where will this session take place?",
+                "Do you have a meeting link for the session?",
+                "Will this be virtual or in-person? Please provide the location details.",
+                "What's the meeting link or room location for your session?"
+            ],
+            "examples": {
+                "virtualMeeting": "https://meet.google.com/abc-defg-hij",
+                "physicalLocation": "Main Conference Room"
+            },
+            "importance": "high",
+            "followUpFields": ["sessionDescription"]
+        }
+    },
+    "sessionDescription": {
+        "uiLabel": "Session Description",
+        "description": "Brief description of what will be covered in the session",
+        "type": "textarea",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "content",
+        "validation": {
+            "required": true,
+            "minLength": 30,
+            "maxLength": 500
+        },
+        "emoji": ":bulb:",
+        "chatbot": {
+            "idealogy": "A description should be short but also capturing the main idea of the session. It should be a summary of what the session is about, and it should not be too vague. Also, if the user is not sure about the description, suggest a working that comes close to the session title and other details.",
+            "askOrder": 7,
+            "synonyms": [
+                "description",
+                "summary",
+                "content overview",
+                "session details",
+                "what you'll cover"
+            ],
+            "contextualQuestions": [
+                "What will you be covering in this session?",
+                "Can you provide a brief description of your session content?",
+                "What should attendees expect to learn?",
+                "Give me 2-3 sentences describing what you'll be sharing."
+            ],
+            "examples": {
+                "demo": "I'll demonstrate how to build a custom RAG system using ChromaDB and LangChain. We'll cover document ingestion, vector storage, and retrieval strategies.",
+                "workshop": "In this hands-on workshop, we'll build a no-code AI workflow using LangFlow. Participants will create their own agents that can interact with various data sources.",
+                "presentation": "I'll be sharing insights from our recent AI model fine-tuning experiments. Learn about the challenges we faced and how we overcame them."
+            },
+            "importance": "high",
+            "followUpFields": ["keyPoints"]
+        }
+    },
+    "keyPoints": {
+        "uiLabel": "Key Points",
+        "description": "Main points or topics that will be covered (3-5 bullet points)",
+        "type": "textarea",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "content",
+        "validation": {
+            "required": true,
+            "minLength": 20,
+            "maxLength": 300
+        },
+        "emoji": ":zap:",
+        "chatbot": {
+            "idealogy": "A list of key points should be short but also capturing the main idea of the session. It should be a summary of what the session is about, and it should not be too vague. Also, if the user is not sure about the description, suggest a working that comes close to the session title and other details.",
+            "askOrder": 8,
+            "synonyms": [
+                "key topics",
+                "main points",
+                "highlights",
+                "bullet points",
+                "outline"
+            ],
+            "contextualQuestions": [
+                "What are the 3-5 main points you'll cover?",
+                "Can you list the key topics of your session?",
+                "What are the highlights attendees can expect?",
+                "What are the most important things you'll discuss?"
+            ],
+            "examples": {
+                "demo": "• Introduction to RAG architecture\n• Setting up ChromaDB\n• Document processing techniques\n• Implementing semantic search",
+                "workshop": "• LangFlow basics and interface\n• Creating custom agents\n• Connecting to external data sources\n• Building conversational workflows",
+                "presentation": "• Our approach to fine-tuning\n• Key challenges we encountered\n• Performance metrics and results\n• Lessons learned and best practices"
+            },
+            "importance": "high",
+            "followUpFields": ["hasPrerequisites"]
+        }
+    },
+    "hasPrerequisites": {
+        "uiLabel": "Has Prerequisites",
+        "description": "Whether there are any prerequisites for attendees",
+        "type": "switch",
+        "default": false,
+        "currentValue": false,
+        "fieldGroup": "prerequisites",
+        "validation": {
+            "type": "boolean"
+        },
+        "chatbot": {
+            "idealogy": "Is the attendees required to have any prior knowledge or software installed before the session? If yes, then ask for the details. This can even be skipped if not really that needed.",
+            "askOrder": 9,
+            "synonyms": [
+                "requirements",
+                "preparation needed",
+                "what to bring",
+                "what's needed",
+                "prerequisites"
+            ],
+            "contextualQuestions": [
+                "Are there any prerequisites for attendees?",
+                "Do participants need to prepare anything beforehand?",
+                "Will attendees need specific software or knowledge?",
+                "Should people install or set up anything before the session?"
+            ],
+            "importance": "medium",
+            "followUpFields": ["prerequisites"]
+        },
+        "dependencies": {
+            "affects": ["prerequisites"],
+            "dependsOn": ["sessionType"]
+        }
+    },
+    "prerequisites": {
+        "uiLabel": "Prerequisites",
+        "description": "What attendees need to have or know before the session",
+        "type": "textarea",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "prerequisites",
+        "validation": {
+            "maxLength": 300,
+            "requiredWhen": {
+                "hasPrerequisites": true
+            }
+        },
+        "visibleWhen": {
+            "hasPrerequisites": true
+        },
+        "emoji": ":gear:",
+        "chatbot": {
+            "idealogy": "",
+            "askOrder": 10,
+            "synonyms": [
+                "requirements",
+                "preparation",
+                "what to bring",
+                "needed software",
+                "prior knowledge"
+            ],
+            "contextualQuestions": [
+                "What should attendees have prepared?",
+                "What software or accounts will participants need?",
+                "Is there anything specific people should install beforehand?",
+                "What prior knowledge would be helpful for attendees?"
+            ],
+            "examples": {
+                "demo": "No prerequisites, just bring your curiosity!",
+                "workshop": "Please have Docker installed and create a free Hugging Face account before the session.",
+                "presentation": "Basic understanding of machine learning concepts would be helpful, but not required."
+            },
+            "importance": "medium",
+            "onlyAskWhen": {
+                "hasPrerequisites": true
+            }
+        },
+        "dependencies": {
+            "dependsOn": ["hasPrerequisites", "sessionType"]
+        }
+    },
+    "benefits": {
+        "uiLabel": "Benefits",
+        "description": "What attendees will gain from the session",
+        "type": "textarea",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "promotion",
+        "validation": {
+            "required": true,
+            "minLength": 20,
+            "maxLength": 300
+        },
+        "emoji": ":star:",
+        "chatbot": {
+            "idealogy": "What are some key takeaways or benefits that attendees will gain from the session? This is important for marketing and promoting the session, so it should be clear and concise.",
+            "askOrder": 11,
+            "synonyms": [
+                "takeaways",
+                "what they'll learn",
+                "value",
+                "outcomes",
+                "what they'll gain"
+            ],
+            "contextualQuestions": [
+                "What will attendees gain from your session?",
+                "What are the main benefits of attending?",
+                "How will this session help the team?",
+                "What skills or knowledge will people take away?"
+            ],
+            "examples": {
+                "demo": "• Understand how RAG systems work\n• Learn implementation strategies you can apply today\n• See real-world applications of AI in development",
+                "workshop": "• Hands-on experience with LangFlow\n• Your own working AI agent to build upon\n• Skills to create no-code AI solutions",
+                "presentation": "• Insights from our real-world experimentation\n• Guidelines to avoid common pitfalls\n• Ideas for your own AI projects"
+            },
+            "importance": "high",
+            "followUpFields": ["additionalNotes"]
+        }
+    },
+    "additionalNotes": {
+        "uiLabel": "Additional Notes",
+        "description": "Any other information about the session",
+        "type": "textarea",
+        "default": "",
+        "currentValue": "",
+        "fieldGroup": "promotion",
+        "validation": {
+            "maxLength": 300
+        },
+        "chatbot": {
+            "idealogy": "Any additional information that might be relevant to the session. This is not a required field, but it can be useful for providing extra context or details.",
+            "askOrder": 12,
+            "synonyms": [
+                "other details",
+                "extra information",
+                "anything else",
+                "special notes",
+                "special mentions"
+            ],
+            "contextualQuestions": [
+                "Is there anything else you'd like to mention about the session?",
+                "Any additional details you want to include in the announcement?",
+                "Anything else attendees should know?",
+                "Any special notes you'd like to add?"
+            ],
+            "examples": {
+                "demo": "We'll have time for Q&A at the end, so bring your questions!",
+                "workshop": "This is a beginner-friendly session, so don't worry if you're new to AI.",
+                "presentation": "We'll be recording this session for those who can't attend live."
+            },
+            "importance": "low"
+        }
+    },
+    "relevantHashtags": {
+        "uiLabel": "Relevant Hashtags",
+        "description": "Topic-specific hashtags to include in the announcement",
+        "type": "text",
+        "default": "#BeingAdept #AIDevs",
+        "currentValue": "#BeingAdept #AIDevs",
+        "fieldGroup": "promotion",
+        "validation": {
+            "required": true,
+            "minLength": 5,
+            "maxLength": 100
+        },
+        "chatbot": {
+            "idealogy": "At max only keep like 3-4 hashtags, and make sure they are relevant to the topic. Also, if the user is not sure about the hashtags, suggest a working that comes close to the session title and other details.",
+            "askOrder": 13,
+            "synonyms": [
+                "hashtags",
+                "tags",
+                "topic tags",
+                "keywords",
+                "categories"
+            ],
+            "contextualQuestions": [
+                "Any specific hashtags you'd like to include?",
+                "Besides #BeingAdept and #AIDevs, what other hashtags are relevant?",
+                "What topic-specific hashtags would you like to add?",
+                "Are there any hashtags specific to your topic?"
+            ],
+            "examples": {
+                "demo": "#BeingAdept #AIDevs #RAGSystems #VectorDB",
+                "workshop": "#BeingAdept #AIDevs #NoCode #LangFlow",
+                "presentation": "#BeingAdept #AIDevs #FineTuning #MachineLearning"
+            },
+            "importance": "low",
+            "defaultBehavior": "useDefault"
+        }
+    },
+    "episodeNumber": {
+        "uiLabel": "Episode Number",
+        "description": "The episode number in the Being Adept series",
+        "type": "number",
+        "default": 1,
+        "currentValue": 1,
+        "fieldGroup": "basic",
+        "validation": {
+            "required": true,
+            "min": 1,
+            "max": 1000,
+            "integer": true
+        },
+        "chatbot": {
+            "idealogy": "Keep this default for now. Do not ask the user for this. This is just a number that will be used to identify the session in the series.",
+            "askOrder": 14,
+            "synonyms": [
+                "episode",
+                "session number",
+                "edition",
+                "series number"
+            ],
+            "contextualQuestions": [],
+            "importance": "medium"
+        }
+    }
+}

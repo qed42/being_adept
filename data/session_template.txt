@@ -1,0 +1,23 @@
+:rocket: "Being Adept" Episode [EPISODE_NUMBER]: [EMOJI] [SESSION_TITLE] [EMOJI]
+
+:calendar: When: [SESSION_DATE] ([SESSION_DURATION])
+:microphone: Presenter(s): [PRESENTER_NAMES]
+:link: Where: [SESSION_LOCATION]
+
+:bulb: What we'll explore:
+• [KEY_POINT_1]
+• [KEY_POINT_2]
+• [KEY_POINT_3]
+
+[PREREQUISITES SECTION - ONLY IF NEEDED]
+:gear: What you'll need:
+• [PREREQUISITE_1]
+• [PREREQUISITE_2]
+
+:star: Why you should join:
+• [BENEFIT_1]
+• [BENEFIT_2]
+
+[ADDITIONAL_NOTES - ONLY IF NEEDED]
+
+[RELEVANT_HASHTAGS]

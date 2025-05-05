@@ -1,0 +1,20 @@
+Here is the current user message and the current state of the field configurations:
+
+<USER_MESSAGE>
+{USER_MESSAGE}
+</USER_MESSAGE>
+
+<CURRENT_FIELD_CONFIGURATIONS>
+{CURRENT_FIELD_CONFIGURATIONS}
+</CURRENT_FIELD_CONFIGURATIONS>
+
+<CURRENT_SYSTEM_DATA>
+{CURRENT_SYSTEM_DATA}
+</CURRENT_SYSTEM_DATA>
+
+Respond to the user message with 3 things:
+1. Your carefully crafted thoughts about what to process and what to do next.
+1. A message to the user in BOT_MESSAGE
+2. The updated field configurations if any or none in NEW_FIELD_CONFIGURATIONS
+
+Ensure that the updated field configurations are between said tags, properly formatted. Now lets begin Synthesizing the response.

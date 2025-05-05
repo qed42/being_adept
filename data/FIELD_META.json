@@ -1,0 +1,93 @@
+{
+    "keyDefinitions": {
+        "uiLabel": {
+            "definition": "Human-readable label displayed for this field",
+            "chatbotRelevance": "The formal name of the field to use in conversations with users",
+            "example": "'Session Title' instead of 'title'"
+        },
+        "description": {
+            "definition": "Detailed explanation of the field's purpose and function",
+            "chatbotRelevance": "Provides explanatory text when users need clarification about a field",
+            "example": "Can be used to explain what a session type means when users are confused"
+        },
+        "type": {
+            "definition": "The input type that defines how users can interact with the field",
+            "chatbotRelevance": "Determines how to collect and validate user responses",
+            "validTypes": ["text", "select", "multiselect", "datetime", "duration", "number", "url", "textarea", "switch"],
+            "example": "For 'select' type, guide users to choose from specific options"
+        },
+        "options": {
+            "definition": "Available choices for selection-type fields",
+            "chatbotRelevance": "Helps validate user inputs and suggest valid choices",
+            "example": "For session types, options would include 'demo', 'workshop', etc."
+        },
+        "default": {
+            "definition": "The standard initial value for the field",
+            "chatbotRelevance": "Used for making suggestions when users are uncertain",
+            "example": "Suggesting 'demo' as the default session type for new presenters"
+        },
+        "currentValue": {
+            "definition": "The present value of the field in the ongoing session planning",
+            "chatbotRelevance": "Helps maintain context and avoid redundant questions",
+            "example": "Remembering the session title a user has already provided"
+        },
+        "fieldGroup": {
+            "definition": "Logical grouping of related fields",
+            "chatbotRelevance": "Helps organize related questions in conversation",
+            "validGroups": ["basic", "content", "logistics", "presenters", "prerequisites", "promotion"],
+            "example": "Grouping presenter-related questions together"
+        },
+        "validation": {
+            "definition": "Rules that determine valid input for the field",
+            "chatbotRelevance": "Ensures user responses meet required criteria",
+            "rules": {
+                "required": "Field must have a value",
+                "allowedValues": "List of acceptable options",
+                "minLength": "Minimum text length",
+                "maxLength": "Maximum text length",
+                "format": "Specific format requirements (e.g., URL, date)",
+                "min/max": "Numeric bounds"
+            }
+        },
+        "visibleWhen": {
+            "definition": "Conditions that determine field visibility",
+            "chatbotRelevance": "Helps determine which fields are relevant to discuss",
+            "example": "Only discuss prerequisites when session type is 'workshop'"
+        },
+        "dependencies": {
+            "definition": "Inter-field relationships and influences",
+            "chatbotRelevance": "Helps understand field interactions and sequencing",
+            "components": {
+                "dependsOn": "Prerequisite fields",
+                "affects": "Fields impacted by changes"
+            }
+        },
+        "chatbot": {
+            "definition": "Specific guidance for chatbot conversations",
+            "components": {
+                "askOrder": "Sequence number for question ordering",
+                "synonyms": "Alternative terms users might use",
+                "contextualQuestions": "Natural language question templates",
+                "examples": "Sample values for explanation",
+                "importance": "Priority level of the field",
+                "followUpFields": "Logical next questions",
+                "skipWhen": "Conditions to skip this field"
+            }
+        },
+        "emoji": {
+            "definition": "Associated emoji for Slack announcements",
+            "chatbotRelevance": "Used to make announcements more visually engaging",
+            "example": ":rocket: for session title, :calendar: for date/time"
+        }
+    },
+    "conversationGuidelines": {
+        "sequencing": "Use askOrder to determine question sequence",
+        "inputValidation": "Check validation rules before accepting responses",
+        "contextMaintenance": "Use dependencies and fieldGroup for conversation flow",
+        "helpfulSuggestions": "Leverage defaults and examples for recommendations",
+        "userUnderstanding": "Use synonyms and descriptions for clarity",
+        "relevanceFiltering": "Use visibility conditions to avoid irrelevant questions",
+        "engagingConversation": "Keep tone enthusiastic and AI-focused",
+        "formattingConsistency": "Use emoji consistently with the Being Adept brand"
+    }
+}
