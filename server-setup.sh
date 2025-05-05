@@ -44,10 +44,6 @@ ExecStart=$APP_DIR/venv/bin/python app.py
 Restart=always
 RestartSec=10
 
-# Health check options
-# Return status code 0 if the service is running correctly
-ExecStartPost=/bin/bash -c 'sleep 5 && systemctl is-active --quiet being-adept-slack-bot'
-
 # Environment file support (optional)
 EnvironmentFile=-$APP_DIR/.env
 
