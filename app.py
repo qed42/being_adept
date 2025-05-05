@@ -19,6 +19,7 @@ openai = OpenAI()
 def message_hello(event, say):
     # Received the event
     thread_ts = event.get("thread_ts", event.get("ts"))
+    print("\n\n\n\n\n\n Started New Session")
     
     # Check if the event is in the correct channel
     if event.get("channel") not in ["C08RKK2AMT2", "C088JM79NLX"]:
@@ -30,6 +31,10 @@ def message_hello(event, say):
     # Track the first message for updating later
     first_message = say(base_wait_message, thread_ts=thread_ts)
     current_ts = first_message["ts"]
+    
+    print(f"Received a message: {event['text']}")
+    print(f"Thread TS: {thread_ts}")
+    print(f"Current TS: {current_ts}")
     
     # Checking for previous conversations
     app.client.chat_update(channel=event["channel"], ts=current_ts, text=f"{base_wait_message} Checking for previous conversations... (1/5)")
@@ -50,6 +55,7 @@ def message_hello(event, say):
         app.client.chat_update(channel=event["channel"], ts=current_ts, text=f"{base_wait_message} Found previous conversations! (2/5)")
         previous_response_id = db.get(query.dataType == "previous_response_id")
         previous_response_id = previous_response_id["previous_response_id"]
+        print(f"Previous response ID: {previous_response_id}")
     
     # Setup model inference parameter template
     parameters = {
@@ -126,6 +132,8 @@ def message_hello(event, say):
 
     app.client.chat_update(channel=event["channel"], ts=current_ts, text=f"{base_wait_message} Sending the request to OpenAI... (4/5)")
 
+    print(f"Parameters: {parameters}")
+    
     # Create new conversation if no previous response is found
     response = openai.responses.create(**parameters)
     raw_response = response.output_text
