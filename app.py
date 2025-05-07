@@ -25,6 +25,9 @@ def message_hello(event, say):
     if event.get("channel") not in ["C08RKK2AMT2", "C088JM79NLX"]:
         return say("Sorry, I can only respond to messages in the #being-adept channel.", thread_ts=thread_ts)
     
+    # Replace user IDs with names
+    event['text'] = replace_user_ids_with_names(event['text'], app.client)
+
     # Prepare the base wait message
     base_wait_message = f"Please wait while I process your request <@{event['user']}>! \nThis may take a few minutes. \n\nStatus:"
     
@@ -51,15 +54,16 @@ def message_hello(event, say):
     
     # Check if the bot history exists
     previous_response_id = None
-    if db.search(query.previous_response_id.exists()):
-        app.client.chat_update(channel=event["channel"], ts=current_ts, text=f"{base_wait_message} Found previous conversations! (2/5)")
-        previous_response_id = db.get(query.dataType == "previous_response_id")
-        previous_response_id = previous_response_id["previous_response_id"]
+    previous_record = db.get(query.dataType == "previous_response_id")
+    if previous_record:
+        previous_response_id = previous_record["previous_response_id"]
+        app.client.chat_update(channel=event["channel"], ts=current_ts, 
+                            text=f"{base_wait_message} Found previous conversations! (2/5)")
         print(f"Previous response ID: {previous_response_id}")
     
     # Setup model inference parameter template
     parameters = {
-        "model": "gpt-4.1-mini",
+        "model": "gpt-4.1",
         "input": [
             {"role": "user", "content": None},
         ],
@@ -83,14 +87,13 @@ def message_hello(event, say):
             user_prompt = file.read()
     
     # Load the default current field configuration
-    current_field_config = ""
-    if db.search(query.current_field_config.exists()):
-        current_field_config = db.get(query.dataType == "current_field_config")
-        current_field_config = current_field_config["current_field_config"]
+    current_field_config = {}
+    config_record = db.get(query.dataType == "current_field_config")
+    if config_record:
+        current_field_config = json.loads(config_record["current_field_config"])
     else:
         with open("data/CURRENT_FIELD_CONFIG.json", "r") as file:
-            current_field_config = file.read()
-    current_field_config = json.loads(current_field_config)
+            current_field_config = json.loads(file.read())
     
     # Seting the previous response ID if it exists
     if previous_response_id:
@@ -141,8 +144,15 @@ def message_hello(event, say):
     xml_response = extract_xml_tags(raw_response)
     app.client.chat_update(channel=event["channel"], ts=current_ts, text=xml_response["BOT_MESSAGE"])
     previous_response_id = response.id
-    db.insert({"dataType": "previous_response_id", "previous_response_id": previous_response_id})
-    db.insert({"dataType": "current_field_config", "current_field_config": xml_response["NEW_FIELD_CONFIGURATIONS"]})
+
+    # For storing data - use upsert instead of insert+update
+    db.upsert({'dataType': 'previous_response_id', 
+            'previous_response_id': previous_response_id}, 
+            query.dataType == "previous_response_id")
+
+    db.upsert({'dataType': 'current_field_config', 
+            'current_field_config': xml_response["NEW_FIELD_CONFIGURATIONS"]}, 
+            query.dataType == "current_field_config")
 
 def replace_variables(text, replacements):
     result = text
@@ -160,6 +170,17 @@ def extract_xml_tags(text):
         result[tag] = content.strip()
     
     return result
+
+def replace_user_ids_with_names(text, slack_client):
+    user_id_pattern = r'<@(U[A-Z0-9]+)>'
+    user_ids = re.findall(user_id_pattern, text)
+    for user_id in user_ids:
+        response = slack_client.users_info(user=user_id)        
+        if response['ok']:
+            user = response['user']
+            name = user.get('profile', {}).get('real_name') or user.get('name', f'Unknown User ({user_id})')
+            text = text.replace(f'<@{user_id}>', f'"@{name}"')
+    return text
 
 if __name__ == "__main__":
     SocketModeHandler(app, os.environ["SLACK_APP_TOKEN"]).start()
