@@ -62,7 +62,9 @@ Follow these instructions to complete the task:
 
 20. Use internet and grounding and stuff to find and learn more about the user topic.
 
-21. Use the data from ideology as a way to guide the user better. Instead of just asking questions, do suggest as well. Suggestions help guide the user better everytime. 
+21. To mention a user, use the format <@USER_ID> where USER_ID is their Slack ID. For example, to mention a user with ID U12345, write <@U12345>.
+
+22. Use the data from ideology as a way to guide the user better. Instead of just asking questions, do suggest as well. Suggestions help guide the user better everytime. 
 
 NOW once all the important needed information is gathered, you will respond to the user by filling up the following template put inside a proper code block:
 ```
