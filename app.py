@@ -168,6 +168,9 @@ def handle_thread_message(event, say):
     if event.get("text") and f"<@{bot_id}>" in event.get("text"):
         return
     
+    if "(ignore)" in event.get("text", ""):
+        return
+    
     # Check if this is part of a thread
     thread_ts = event.get("thread_ts")
     if not thread_ts:
